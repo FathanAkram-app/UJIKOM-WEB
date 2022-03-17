@@ -10,7 +10,7 @@ export const Navigation = (props) =>{
                         props.setShowList(0)
                     }}>Pelajaran</Nav.Link>
                     <Nav.Link onClick={()=>props.setShowList(1)}>Users</Nav.Link>
-                    <Button style={{position : 'absolute',right: 0,top:0,marginRight:"8px",marginTop:"8px"}} variant="danger">Logout</Button>
+                    <Button style={{position : 'absolute',right: 0,top:0,marginRight:"8px",marginTop:"8px"}} variant="danger" onClick={()=>{document.cookie = "token="; window.location.reload()}}>Logout</Button>
                 </Nav>
             </Container>
         </Navbar>

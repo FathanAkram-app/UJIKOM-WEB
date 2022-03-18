@@ -70,9 +70,8 @@ const dateToday = ()=>{
 const input = (label,inputType,setDataForms,dataForms)=>{
     return(
         <Form.Group key={label} className="formgroup" controlId="formBasicEmail">
-            <Form.Label>{label}</Form.Label>
-            <Form.Control type={inputType} placeholder={"Enter "+label} onChange={(e)=>{
-                console.log(label)
+            <Form.Label>{label.replace("_", " ")}</Form.Label>
+            <Form.Control type={inputType} placeholder={"Enter "+label.replace("_", " ")} onChange={(e)=>{
                 const data = dataForms
                 data[label] = e.target.value
                 setDataForms(dataForms)

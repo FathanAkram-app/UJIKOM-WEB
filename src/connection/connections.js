@@ -51,13 +51,34 @@ export const getUsers = (setList,keywords) =>{
 }
 export const addPelajaran = (data) =>{
     const body = {
-        nama:data.namapelajaran,
+        nama:data.nama_pelajaran,
         kelas:data.kelas,
-        guru_id:parseInt(data.guru),
+        guru_id:parseInt(data.id_guru),
         waktu: data.tanggal+" "+data.waktu+":00",
         materi: data.materi
     }
     axios.post(baseUrl+'/api/addpelajaran',
+    body,
+    {
+        headers:{
+            "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        window.location.reload()
+    })
+    .catch((error)=>{
+        console.log(body)
+        console.log(error)
+    })
+}
+
+export const deletePelajaran = (id) =>{
+    const body = {
+        id:id
+    }
+    axios.post(baseUrl+'/api/deletepelajaran',
     body,
     {
         headers:{

@@ -1,6 +1,7 @@
+import { Alert } from "bootstrap"
 import { useEffect, useState } from "react"
 import { Button, Card, Table } from "react-bootstrap"
-import { getPelajaran } from "../../connection/connections"
+import { deletePelajaran, getPelajaran } from "../../connection/connections"
 import { modalForms } from "../helper_components/modal"
 
 export const TablePelajaran = (props)=>{
@@ -12,7 +13,7 @@ export const TablePelajaran = (props)=>{
     const data = props.list
     
     for (const key in data) {
-        rows.push(<TrPelajaran key={key} data={{index: key.toString(),namapelajaran:data[key].nama,jampelajaran:data[key].waktu, kelas:data[key].kelas, guru:data[key].nama_guru, materi:data[key].materi}}/>)
+        rows.push(<TrPelajaran  key={key} data={{id: data[key].id,namapelajaran:data[key].nama,jampelajaran:data[key].waktu, kelas:data[key].kelas, guru:data[key].nama_guru, materi:data[key].materi}}/>)
     }
     return (
         <Card style={{backgroundColor:"black",margin:"16px"}}>
@@ -36,7 +37,7 @@ export const TablePelajaran = (props)=>{
                                 props.setShowModal(true)
                                 
                             }} style={{margin:"0"}}variant="primary" onClick={()=>{
-                                props.setModalElements(modalForms({namapelajaran:"",waktu:"", kelas:"", guru:"", materi:""},"Tambah Pelajaran",props.setDataForms,props.dataForms))
+                                props.setModalElements(modalForms({nama_pelajaran:"",waktu:"", kelas:"", id_guru:"", materi:""},"Tambah Pelajaran",props.setDataForms,props.dataForms))
                                 props.setShowModal(true)
                             }}>Tambah Pelajaran</Button>
                         </th>
@@ -56,7 +57,7 @@ const TrPelajaran = (props)=>{
     const data = props.data
     return(
         <tr>
-            <td>{data.index}</td>
+            <td>{data.id}</td>
             <td>{data.namapelajaran}</td>
             <td>{data.jampelajaran}</td>
             <td>{data.kelas}</td>
@@ -64,7 +65,11 @@ const TrPelajaran = (props)=>{
             <td>{data.materi}</td>
             <td>
                 <Button style={{margin:"0"}}variant="warning">edit</Button>
-                <Button style={{margin:"0"}}variant="danger">Delete</Button>
+                <Button style={{margin:"0"}}variant="danger" onClick={(e)=>{
+                    const s = "click once more to confirm deletion"
+                    if(e.target.innerText == s) deletePelajaran(data.id)
+                    e.target.innerText = s
+                }}>Delete</Button>
             </td>
         </tr>
     )

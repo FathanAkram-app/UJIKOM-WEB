@@ -1,11 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button, Card, Table } from "react-bootstrap"
 import { getPelajaran } from "../../connection/connections"
+import { modalForms } from "../helper_components/modal"
 
 export const TablePelajaran = (props)=>{
     useEffect(()=>{
         getPelajaran(props.setList, "")
     },[])
+    
     const rows = []
     const data = props.list
     
@@ -30,7 +32,13 @@ export const TablePelajaran = (props)=>{
                         <th>Materi</th>
                         
                         <th>
-                            <Button onClick={()=>props.setShowModal(true)} style={{margin:"0"}}variant="primary">Tambah Pelajaran</Button>
+                            <Button onClick={()=>{
+                                props.setShowModal(true)
+                                
+                            }} style={{margin:"0"}}variant="primary" onClick={()=>{
+                                props.setModalElements(modalForms({namapelajaran:"",waktu:"", kelas:"", guru:"", materi:""},"Tambah Pelajaran",props.setDataForms,props.dataForms))
+                                props.setShowModal(true)
+                            }}>Tambah Pelajaran</Button>
                         </th>
                         
                     </tr>

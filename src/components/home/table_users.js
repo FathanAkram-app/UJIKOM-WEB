@@ -1,13 +1,16 @@
 import { useEffect } from "react"
 import { Button, Card, Table } from "react-bootstrap"
 import { getUsers } from "../../connection/connections"
+import { modalForms } from "../helper_components/modal"
 
 export const TableUsers = (props)=>{
     useEffect(()=>{
         getUsers(props.setList, "")
+        
     },[])
     const rows = []
     const data = props.list
+    
     console.log(data)
     for (const key in data) {
         rows.push(<TrUsers key={key} data={{index: key.toString(),username:data[key].username,email:data[key].email, roles:data[key].roles, nama:data[key].nama, kelas:data[key].kelas}}/>)
@@ -31,7 +34,10 @@ export const TableUsers = (props)=>{
                         <th>Kelas</th>
                         
                         <th>
-                            <Button style={{margin:"0"}}variant="primary">Tambah User</Button>
+                            <Button style={{margin:"0"}}variant="primary" onClick={()=>{
+                                props.setModalElements(modalForms({username:"",email:"", roles:"", nama:"", kelas:""},"Tambah User"))
+                                props.setShowModal(true)
+                            }}>Tambah User</Button>
                         </th>
                         
                     </tr>

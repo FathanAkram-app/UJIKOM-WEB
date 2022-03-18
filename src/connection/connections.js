@@ -49,3 +49,27 @@ export const getUsers = (setList,keywords) =>{
         console.log(error)
     })
 }
+export const addPelajaran = (data) =>{
+    const body = {
+        nama:data.namapelajaran,
+        kelas:data.kelas,
+        guru_id:parseInt(data.guru),
+        waktu: data.tanggal+" "+data.waktu+":00",
+        materi: data.materi
+    }
+    axios.post(baseUrl+'/api/addpelajaran',
+    body,
+    {
+        headers:{
+            "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        window.location.reload()
+    })
+    .catch((error)=>{
+        console.log(body)
+        console.log(error)
+    })
+}

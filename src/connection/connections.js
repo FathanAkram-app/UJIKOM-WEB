@@ -76,7 +76,8 @@ export const addPelajaran = (data) =>{
 
 export const deletePelajaran = (id) =>{
     const body = {
-        id:id
+        id:id,
+        token:tokenCookies()
     }
     axios.post(baseUrl+'/api/deletepelajaran',
     body,
@@ -93,4 +94,88 @@ export const deletePelajaran = (id) =>{
         console.log(body)
         console.log(error)
     })
+}
+export const registerUser = (data) =>{
+    const auth = btoa(JSON.stringify({...data,serverkey:"B1smill4hUJIKOM"}))
+    axios.post(baseUrl+'/api/register',
+    {token: tokenCookies()},
+    {
+        headers:{
+            "Authorization": auth
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        window.location.reload()
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
+
+export const deleteUser = (id) =>{
+    const body = {
+        id:id,
+        token:tokenCookies()
+    }
+    axios.post(baseUrl+'/api/admin/deleteUser',
+    body,
+    {
+        headers:{
+            "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        window.location.reload()
+    })
+    .catch((error)=>{
+        console.log(body)
+        console.log(error)
+    })
+}
+
+export const editPelajaran = (data) =>{
+    return data
+    // const body = {
+    //     nama:data.nama_pelajaran,
+    //     kelas:data.kelas,
+    //     guru_id:parseInt(data.id_guru),
+    //     waktu: data.tanggal+" "+data.waktu+":00",
+    //     materi: data.materi
+    // }
+    // axios.post(baseUrl+'/api/addpelajaran',
+    // body,
+    // {
+    //     headers:{
+    //         "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+    //     }
+    // })
+    // .then((res)=>{
+    //     console.log(res.data)
+    //     window.location.reload()
+    // })
+    // .catch((error)=>{
+    //     console.log(body)
+    //     console.log(error)
+    // })
+}
+
+export const editUser = (data) =>{
+    return data
+    // const auth = btoa(JSON.stringify({...data,serverkey:"B1smill4hUJIKOM"}))
+    // axios.post(baseUrl+'/api/register',
+    // {token: tokenCookies()},
+    // {
+    //     headers:{
+    //         "Authorization": auth
+    //     }
+    // })
+    // .then((res)=>{
+    //     console.log(res.data)
+    //     window.location.reload()
+    // })
+    // .catch((error)=>{
+    //     console.log(error)
+    // })
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { Button, Card, Table } from "react-bootstrap"
-import { getUsers } from "../../connection/connections"
+import { deleteUser, getUsers } from "../../connection/connections"
 import { modalForms } from "../helper_components/modal"
 
 export const TableUsers = (props)=>{
@@ -11,9 +11,21 @@ export const TableUsers = (props)=>{
     const rows = []
     const data = props.list
     
-    console.log(data)
     for (const key in data) {
-        rows.push(<TrUsers key={key} data={{index: key.toString(),username:data[key].username,email:data[key].email, roles:data[key].roles, nama:data[key].nama, kelas:data[key].kelas}}/>)
+        rows.push(<TrUsers 
+            key={key} 
+            setDataForms={props.setDataForms} 
+            dataForms={props.dataForms} 
+            setShowModal={props.setShowModal} 
+            setModalElements={props.setModalElements} 
+            setSaveButtonState = {props.setSaveButtonState}
+            data={{
+                id: data[key].id,
+                username:data[key].username,
+                email:data[key].email, 
+                roles:data[key].roles, 
+                nama:data[key].nama, 
+                kelas:data[key].kelas}}/>)
     }
     return (
         <Card style={{backgroundColor:"black",margin:"16px"}}>
@@ -26,7 +38,7 @@ export const TableUsers = (props)=>{
                 
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>id</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Roles</th>
@@ -35,7 +47,7 @@ export const TableUsers = (props)=>{
                         
                         <th>
                             <Button style={{margin:"0"}}variant="primary" onClick={()=>{
-                                props.setModalElements(modalForms({username:"",email:"", roles:"", nama:"", kelas:""},"Tambah User"))
+                                props.setModalElements(modalForms({username:"",email:"", roles:"", nama:"", kelas:"",password:""},"Tambah User",props.setDataForms,props.dataForms))
                                 props.setShowModal(true)
                             }}>Tambah User</Button>
                         </th>
@@ -76,16 +88,25 @@ const TrUsers = (props)=>{
 
     
     return(
-        <tr key={data.index}>
-            <td>{data.index}</td>
+        <tr key={data.id}>
+            <td>{data.id}</td>
             <td>{data.username}</td>
             <td>{data.email}</td>
             {renderRoles(data.roles)}
             <td>{data.nama}</td>
             <td>{data.kelas}</td>
             <td>
-                <Button style={{margin:"0"}}variant="warning">edit</Button>
-                <Button style={{margin:"0"}}variant="danger">Delete</Button>
+                <Button style={{margin:"0"}}variant="warning" onClick={()=>{
+                    props.setSaveButtonState(1)
+                    props.setDataForms(data)
+                    props.setModalElements(modalForms(data,"Edit User",props.setDataForms,props.dataForms))
+                    props.setShowModal(true)
+                }}> edit</Button>
+                <Button style={{margin:"0"}}variant="danger" onClick={(e)=>{
+                    const s = "click once more to confirm deletion"
+                    if(e.target.innerText == s) deleteUser(data.id)
+                    e.target.innerText = s
+                }}>Delete</Button>
             </td>
         </tr>
     )

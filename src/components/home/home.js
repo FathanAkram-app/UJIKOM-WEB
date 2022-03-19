@@ -2,16 +2,39 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { addPelajaran, getPelajaran, getUsers } from "../../connection/connections";
+import { addPelajaran, editPelajaran, editUser, getPelajaran, getUsers, registerUser } from "../../connection/connections";
 import { tokenCookies } from '../helper_components/authentication';
 import { modalElementsUser, ShowModal } from "../helper_components/modal";
 import { Navigation } from "./navigation";
 import { TablePelajaran } from "./table_pelajaran";
 import { TableUsers } from "./table_users";
 
-function renderSwitch(params,list,setList,setShowModal,setModalElements,setDataForms,dataForms) {
-    const tablePelajaran = (list && <TablePelajaran setDataForms={setDataForms} dataForms={dataForms} list={list}  setList={setList} setShowModal={setShowModal} setModalElements={setModalElements}/>)
-    const tableUsers = (list && <TableUsers list={list}  setList={setList} setShowModal={setShowModal} setModalElements={setModalElements}/>)
+function renderSwitch(
+    params,
+    list,
+    setList,
+    setShowModal,
+    setModalElements,
+    setDataForms,
+    dataForms, 
+    setSaveButtonState) {
+    const tablePelajaran = (list && <TablePelajaran 
+        setDataForms={setDataForms} 
+        dataForms={dataForms} 
+        list={list}  
+        setList={setList} 
+        setShowModal={setShowModal} 
+        setModalElements={setModalElements}
+        setSaveButtonState={setSaveButtonState}/>)
+
+    const tableUsers = (list && <TableUsers 
+        setDataForms={setDataForms} 
+        dataForms={dataForms} list={list}  
+        setList={setList} 
+        setShowModal={setShowModal} 
+        setModalElements={setModalElements}
+        setSaveButtonState={setSaveButtonState}/>)
+
     switch (params) {
         case 0:
             return(tablePelajaran)
@@ -36,14 +59,46 @@ export const Home = ()=>{
     const [showModal, setShowModal] = useState(false)
     const [modalElements, setModalElements] = useState([<div key="1">no elements</div>])
     const [dataForms, setDataForms] = useState({})
+    const [saveButtonState, setSaveButtonState] = useState(0)
     
     return(
 
         <div>
             
-            <Navigation setShowList={setShowList} setList={setList} list={list}/>
-            {renderSwitch(showList,list,setList,setShowModal,setModalElements,setDataForms,dataForms)}
-            <ShowModal showModal={showModal} setShowModal={setShowModal} elements={modalElements} buttons={showList != 1? [<Button key="btn" variant="primary" onClick={()=>{addPelajaran(dataForms)}}>Save changes</Button>]: null}/>
+            <Navigation 
+                setShowList={setShowList} 
+                setList={setList} 
+                list={list}
+            />
+            {renderSwitch(
+                showList,
+                list,
+                setList,
+                setShowModal,
+                setModalElements,
+                setDataForms,
+                dataForms,
+                setSaveButtonState
+            )}
+            <ShowModal 
+                showModal={showModal} 
+                setShowModal={setShowModal} 
+                elements={modalElements} 
+                saveButtonState={saveButtonState}
+                setDataForms={setDataForms}
+                buttons={
+                    showList != 1? 
+                        [
+                            <Button key="btn" variant="primary" onClick={()=>{addPelajaran(dataForms)}}>Save changes</Button>,
+                            <Button key="btn" variant="primary" onClick={()=>{editPelajaran(dataForms)}}>Save changes</Button>
+                        ]
+                        :
+                        [
+                            <Button key="btn" variant="primary" onClick={()=>{registerUser(dataForms)}}>Save changes</Button>,
+                            <Button key="btn" variant="primary" onClick={()=>{editUser(dataForms)}}>Save changes</Button>
+                        ]
+                }
+            />
         </div>
     )
 }

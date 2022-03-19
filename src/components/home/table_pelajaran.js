@@ -25,12 +25,14 @@ export const TablePelajaran = (props)=>{
                 nama_pelajaran:data[key].nama,
                 jampelajaran:data[key].waktu, 
                 kelas:data[key].kelas, 
-                id_guru:data[key].nama_guru, 
-                materi:data[key].materi
+                id_guru:data[key].guru_id, 
+                materi:data[key].materi,
+                nama_guru:data[key].nama_guru
             }}/>)
     }
     return (
         <Card style={{backgroundColor:"black",margin:"16px"}}>
+            
             <input placeholder="Search.." onChange={(e)=>{
                 
                 getPelajaran(props.setList,e.target.value)
@@ -73,7 +75,7 @@ const TrPelajaran = (props)=>{
             <td>{data.nama_pelajaran}</td>
             <td>{data.jampelajaran}</td>
             <td>{data.kelas}</td>
-            <td>{data.id_guru}</td>
+            <td>{data.nama_guru}</td>
             <td>{data.materi}</td>
             <td>
                 <Button style={{margin:"0"}}variant="warning" onClick={()=>{

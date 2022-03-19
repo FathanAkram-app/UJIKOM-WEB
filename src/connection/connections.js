@@ -5,12 +5,16 @@ const baseUrl = "http://localhost:3000"
 // Make a request for a user with a given ID
 export const getPelajaran = (setList,keywords)=>{
     axios.get(baseUrl+'/api/getpelajaran?search='+keywords)
-            .then(function (response) {
-                setList(response.data.result)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        .then(function (res) {
+            if (res.data.status_code != 200) {
+                alert(res.data.message)
+            }else{
+                setList(res.data.result)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
 }
 
 export const submitLogin = (data)=>{
@@ -22,8 +26,13 @@ export const submitLogin = (data)=>{
         }
     })
     .then((res)=>{
-        document.cookie = "token="+res.data.result.token;
-        window.location.reload()
+        
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            document.cookie = "token="+res.data.result.token;
+            window.location.reload()
+        }
     })
     .catch(function (error) {
         console.log(error);
@@ -43,7 +52,12 @@ export const getUsers = (setList,keywords) =>{
         }
     })
     .then((res)=>{
-        setList(res.data.result)
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            setList(res.data.result)
+        }
+        
     })
     .catch((error)=>{
         console.log(error)
@@ -55,7 +69,8 @@ export const addPelajaran = (data) =>{
         kelas:data.kelas,
         guru_id:parseInt(data.id_guru),
         waktu: data.tanggal+" "+data.waktu+":00",
-        materi: data.materi
+        materi: data.materi,
+        token: tokenCookies()
     }
     axios.post(baseUrl+'/api/addpelajaran',
     body,
@@ -65,8 +80,11 @@ export const addPelajaran = (data) =>{
         }
     })
     .then((res)=>{
-        console.log(res.data)
-        window.location.reload()
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
     })
     .catch((error)=>{
         console.log(body)
@@ -87,8 +105,11 @@ export const deletePelajaran = (id) =>{
         }
     })
     .then((res)=>{
-        console.log(res.data)
-        window.location.reload()
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
     })
     .catch((error)=>{
         console.log(body)
@@ -105,8 +126,11 @@ export const registerUser = (data) =>{
         }
     })
     .then((res)=>{
-        console.log(res.data)
-        window.location.reload()
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
     })
     .catch((error)=>{
         console.log(error)
@@ -126,8 +150,36 @@ export const deleteUser = (id) =>{
         }
     })
     .then((res)=>{
-        console.log(res.data)
-        window.location.reload()
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
+
+export const editPelajaran = (data) =>{
+    const body = {
+        ...data,
+        token:tokenCookies(),
+        jampelajaran: data.tanggal+" "+data.waktu
+    }
+    axios.post(baseUrl+'/api/admin/editpelajaran',
+    body,
+    {
+        headers:{
+            "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+        }
+    })
+    .then((res)=>{
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
     })
     .catch((error)=>{
         console.log(body)
@@ -135,47 +187,26 @@ export const deleteUser = (id) =>{
     })
 }
 
-export const editPelajaran = (data) =>{
-    return data
-    // const body = {
-    //     nama:data.nama_pelajaran,
-    //     kelas:data.kelas,
-    //     guru_id:parseInt(data.id_guru),
-    //     waktu: data.tanggal+" "+data.waktu+":00",
-    //     materi: data.materi
-    // }
-    // axios.post(baseUrl+'/api/addpelajaran',
-    // body,
-    // {
-    //     headers:{
-    //         "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
-    //     }
-    // })
-    // .then((res)=>{
-    //     console.log(res.data)
-    //     window.location.reload()
-    // })
-    // .catch((error)=>{
-    //     console.log(body)
-    //     console.log(error)
-    // })
-}
-
 export const editUser = (data) =>{
-    return data
-    // const auth = btoa(JSON.stringify({...data,serverkey:"B1smill4hUJIKOM"}))
-    // axios.post(baseUrl+'/api/register',
-    // {token: tokenCookies()},
-    // {
-    //     headers:{
-    //         "Authorization": auth
-    //     }
-    // })
-    // .then((res)=>{
-    //     console.log(res.data)
-    //     window.location.reload()
-    // })
-    // .catch((error)=>{
-    //     console.log(error)
-    // })
+    const body = {
+        ...data,
+        token:tokenCookies()
+    }
+    axios.post(baseUrl+'/api/admin/edituser',
+    body,
+    {
+        headers:{
+            "Authorization": 'eyJzZXJ2ZXJrZXkiOiJCMXNtaWxsNGhVSklLT00ifQ=='
+        }
+    })
+    .then((res)=>{
+        if (res.data.status_code != 200) {
+            alert(res.data.message)
+        }else{
+            window.location.reload()
+        }
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
 }

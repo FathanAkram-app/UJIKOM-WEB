@@ -30,17 +30,29 @@ export const ShowModal = (props)=>{
 export const modalForms = (inputs,type,setDataForms,dataForms)=>{
     var arr = []
     arr.push(<h1 key="header">{type}</h1>)
-    for (const key in inputs) {
+    for (var key in inputs) {
         const data = dataForms
         data[key] = inputs[key]
         setDataForms(data)
-        if (key != "id") {
-            const ip = (key !="waktu" ?(key!="password" ? "text" : "password") : "time" )
+        if (key != "id" && key != "nama_guru") {
+            const ip = (key !="waktu" && key != "jampelajaran" ?(key!="password" ? "text" : "password") : "time" )
+            var i = null
+            var waktu = null
+            var tanggal = null
+            if (key == "jampelajaran") {
+                i = inputs[key].split("T")
+                key = "waktu"
+                waktu = i[1].split('.')[0]
+                tanggal = i[0]
+                const d = dataForms
+                d["waktu"] = waktu
+                d["tanggal"] = tanggal
+                setDataForms(d)
+            }
             
-            
-            arr.push(input(key,ip,setDataForms, dataForms, inputs[key]))
+            arr.push(input(key,ip,setDataForms, dataForms, (i ? waktu : inputs[key])))
             if (ip == "time") {
-                arr.push(input("tanggal","date",setDataForms, dataForms,inputs[key]))
+                arr.push(input("tanggal","date",setDataForms, dataForms,(i ? tanggal : inputs[key])))
                 
             }
         }

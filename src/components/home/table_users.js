@@ -66,7 +66,6 @@ export const TableUsers = (props)=>{
 }
 
 function renderRoles(role) {
-    console.log(role)
     switch (role) {
         case "1":
             return (<td>Siswa</td>)

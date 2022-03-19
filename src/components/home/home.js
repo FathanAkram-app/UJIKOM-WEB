@@ -9,7 +9,7 @@ import { Navigation } from "./navigation";
 import { TablePelajaran } from "./table_pelajaran";
 import { TableUsers } from "./table_users";
 
-function renderSwitch(
+function renderTable(
     params,
     list,
     setList,
@@ -35,14 +35,20 @@ function renderSwitch(
         setModalElements={setModalElements}
         setSaveButtonState={setSaveButtonState}/>)
 
+    const title = (t)=>(
+        <div key="1" style={{backgroundColor:"black", padding:"8px"}}>
+            <h1  style={{color:"white"}}>{t}</h1>
+        </div>
+    )
+
     switch (params) {
         case 0:
-            return(tablePelajaran)
+            return([title("Pelajaran"),tablePelajaran])
         case 1:
             
-            return(tableUsers)
+            return([title("Users"),tableUsers])
         default:
-            return(tablePelajaran)
+            return([title("Pelajaran"),tablePelajaran])
     }
 }
 
@@ -70,7 +76,7 @@ export const Home = ()=>{
                 setList={setList} 
                 list={list}
             />
-            {renderSwitch(
+            {renderTable(
                 showList,
                 list,
                 setList,

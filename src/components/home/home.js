@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { addPelajaran, editPelajaran, editUser, getPelajaran, getUsers, registerUser } from "../../connection/connections";
+import { addPelajaran, editPelajaran, editUser, registerUser } from "../../connection/connections";
 import { tokenCookies } from '../helper_components/authentication';
-import { modalElementsUser, ShowModal } from "../helper_components/modal";
+import { ShowModal } from "../helper_components/modal";
 import { Navigation } from "./navigation";
 import { TablePelajaran } from "./table_pelajaran";
 import { TableUsers } from "./table_users";
@@ -93,7 +93,7 @@ export const Home = ()=>{
                 saveButtonState={saveButtonState}
                 setDataForms={setDataForms}
                 buttons={
-                    showList != 1? 
+                    showList !== 1? 
                         [
                             <Button key="btn" variant="primary" onClick={()=>{addPelajaran(dataForms)}}>Save changes</Button>,
                             <Button key="btn" variant="primary" onClick={()=>{editPelajaran(dataForms)}}>Save changes</Button>

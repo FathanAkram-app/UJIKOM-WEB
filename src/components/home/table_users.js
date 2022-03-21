@@ -7,7 +7,7 @@ export const TableUsers = (props)=>{
     useEffect(()=>{
         getUsers(props.setList, "")
         
-    },[])
+    })
     const rows = []
     const data = props.list
     
@@ -103,7 +103,7 @@ const TrUsers = (props)=>{
                 }}> edit</Button>
                 <Button style={{margin:"0"}}variant="danger" onClick={(e)=>{
                     const s = "click once more to confirm deletion"
-                    if(e.target.innerText == s) deleteUser(data.id)
+                    if(e.target.innerText === s) deleteUser(data.id)
                     e.target.innerText = s
                 }}>Delete</Button>
             </td>

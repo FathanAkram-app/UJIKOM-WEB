@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+
 import { Button, Form, Modal } from "react-bootstrap"
-import TimePicker from 'react-bootstrap-time-picker';
-import { addPelajaran } from "../../connection/connections";
 
 export const ShowModal = (props)=>{
     
@@ -23,6 +21,12 @@ export const ShowModal = (props)=>{
     )
 }
 
+const valueForm = (key,inputs,v)=>{
+    
+    const data = v
+    data[key] = inputs[key]
+    return data
+}
 
 
 
@@ -31,15 +35,13 @@ export const modalForms = (inputs,type,setDataForms,dataForms)=>{
     var arr = []
     arr.push(<h1 key="header">{type}</h1>)
     for (var key in inputs) {
-        const data = dataForms
-        data[key] = inputs[key]
-        setDataForms(data)
-        if (key != "id" && key != "nama_guru") {
-            const ip = (key !="waktu" && key != "jampelajaran" ?(key!="password" ? "text" : "password") : "time" )
+        setDataForms((v)=>valueForm(key,inputs,v))
+        if (key !== "id" && key !== "nama_guru") {
+            const ip = (key !=="waktu" && key !== "jampelajaran" ?(key!=="password" ? "text" : "password") : "time" )
             var i = null
             var waktu = null
             var tanggal = null
-            if (key == "jampelajaran") {
+            if (key === "jampelajaran") {
                 i = inputs[key].split("T")
                 key = "waktu"
                 waktu = i[1].split('.')[0]
@@ -50,9 +52,9 @@ export const modalForms = (inputs,type,setDataForms,dataForms)=>{
                 setDataForms(d)
             }
             
-            arr.push(input(key,ip,setDataForms, dataForms, (i ? waktu : inputs[key])))
-            if (ip == "time") {
-                arr.push(input("tanggal","date",setDataForms, dataForms,(i ? tanggal : inputs[key])))
+            arr.push(input(key,ip,setDataForms, (i ? waktu : inputs[key])))
+            if (ip === "time") {
+                arr.push(input("tanggal","date",setDataForms,(i ? tanggal : inputs[key])))
                 
             }
         }
@@ -65,46 +67,40 @@ export const modalForms = (inputs,type,setDataForms,dataForms)=>{
         </Form>
     )
 }
-const timeCalculation = (e)=>{
-    const c = e/3600
-    const s = parseInt(Math.floor(c)).toString()
-    const m = (c - Math.floor(c))*60
-    const ml = m.toString().length
-    const mll = (ml>1? m.toString() : "0"+m.toString())
-    if(s.length>1){
-        return Math.floor(c)+":"+mll+":00"
-    }else{
-        return "0"+Math.floor(c)+":"+mll+":00"
-    }
-}
+// const timeCalculation = (e)=>{
+//     const c = e/3600
+//     const s = parseInt(Math.floor(c)).toString()
+//     const m = (c - Math.floor(c))*60
+//     const ml = m.toString().length
+//     const mll = (ml>1? m.toString() : "0"+m.toString())
+//     if(s.length>1){
+//         return Math.floor(c)+":"+mll+":00"
+//     }else{
+//         return "0"+Math.floor(c)+":"+mll+":00"
+//     }
+// }
 
-const dateToday = ()=>{
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
+// const dateToday = ()=>{
+//     const today = new Date();
+//     const yyyy = today.getFullYear();
+//     let mm = today.getMonth() + 1;
+//     let dd = today.getDate();
 
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
+//     if (dd < 10) dd = '0' + dd;
+//     if (mm < 10) mm = '0' + mm;
 
-    return yyyy + '-' + mm + '-' + dd;
-}
-const input = (label,inputType,setDataForms,dataForms,value)=>{
-    if (label == "roles") {
+//     return yyyy + '-' + mm + '-' + dd;
+// }
+const input = (label,inputType,setDataForms,value)=>{
+    if (label === "roles") {
         return (
             <Form.Group key={label} className="formgroup">
                 <Form.Label>{label.replace("_", " ")}</Form.Label>
                 <Form.Select 
                     defaultValue={value} 
                     placeholder={"Enter "+label.replace("_", " ")} 
-                    onChange={(e)=>{
-
-                        const data = dataForms
-                        data[label] = e.target.value
-                        setDataForms(data)
-                        
-                    }
-                } aria-label="Default select example">
+                    onChange={(e)=>setDataForms(data => valueDataForms(label,data,e))} 
+                    aria-label="Default select example">
                     <option value="">silahkan pilih</option>
                     <option value="1">Siswa</option>
                     <option value="2">Guru</option>
@@ -117,15 +113,20 @@ const input = (label,inputType,setDataForms,dataForms,value)=>{
     return(
         <Form.Group key={label} className="formgroup">
             <Form.Label>{label.replace("_", " ")}</Form.Label>
-            <Form.Control type={inputType} defaultValue={value} placeholder={"Enter "+label.replace("_", " ")} onChange={(e)=>{
-                
-                const data = dataForms
-                data[label] = e.target.value
-                setDataForms(data)
-                }}/>
+            <Form.Control 
+                type={inputType} 
+                defaultValue={value} 
+                placeholder={"Enter "+label.replace("_", " ")} 
+                onChange={(e)=>setDataForms(data => valueDataForms(label,data,e))}/>
             
         </Form.Group>
     )
     
     
+}
+
+const valueDataForms = (label,dataForms,e)=>{
+    const data = dataForms
+    data[label] = e.target.value
+    return data
 }

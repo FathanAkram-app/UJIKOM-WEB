@@ -1,5 +1,5 @@
-import { Alert } from "bootstrap"
-import { useEffect, useState } from "react"
+
+import { useEffect } from "react"
 import { Button, Card, Table } from "react-bootstrap"
 import { deletePelajaran, getPelajaran } from "../../connection/connections"
 import { modalForms } from "../helper_components/modal"
@@ -7,14 +7,14 @@ import { modalForms } from "../helper_components/modal"
 export const TablePelajaran = (props)=>{
     useEffect(()=>{
         getPelajaran(props.setList, "")
-    },[])
+    })
     
     const rows = []
     const data = props.list
     
     for (const key in data) {
         rows.push(<TrPelajaran 
-            key={key} 
+            key={data[key].id} 
             setDataForms={props.setDataForms} 
             dataForms={props.dataForms} 
             setShowModal={props.setShowModal} 
@@ -33,10 +33,9 @@ export const TablePelajaran = (props)=>{
     return (
         <Card style={{backgroundColor:"black",margin:"16px"}}>
             
-            <input placeholder="Search.." onChange={(e)=>{
-                
-                getPelajaran(props.setList,e.target.value)
-            }}></input>
+            <input 
+                placeholder="Search.." 
+                onChange={(e)=>getPelajaran(props.setList,e.target.value)}></input>
             <Table striped bordered hover variant="dark">
                 
                 <thead>
@@ -86,7 +85,7 @@ const TrPelajaran = (props)=>{
                 }}>edit</Button>
                 <Button style={{margin:"0"}}variant="danger" onClick={(e)=>{
                     const s = "click once more to confirm deletion"
-                    if(e.target.innerText == s) deletePelajaran(data.id)
+                    if(e.target.innerText === s) deletePelajaran(data.id)
                     e.target.innerText = s
                 }}>Delete</Button>
             </td>

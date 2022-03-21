@@ -1,12 +1,12 @@
 import { tokenCookies } from '../components/helper_components/authentication';
 
 const axios = require('axios').default;
-const baseUrl = "http://localhost:3000"
+const baseUrl = "http://192.168.20.246:3000"
 // Make a request for a user with a given ID
 export const getPelajaran = (setList,keywords)=>{
     axios.get(baseUrl+'/api/getpelajaran?search='+keywords)
         .then(function (res) {
-            if (res.data.status_code != 200) {
+            if (res.data.status_code !== 200) {
                 alert(res.data.message)
             }else{
                 setList(res.data.result)
@@ -27,7 +27,7 @@ export const submitLogin = (data)=>{
     })
     .then((res)=>{
         
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             document.cookie = "token="+res.data.result.token;
@@ -52,7 +52,7 @@ export const getUsers = (setList,keywords) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             setList(res.data.result)
@@ -80,7 +80,7 @@ export const addPelajaran = (data) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
@@ -105,7 +105,7 @@ export const deletePelajaran = (id) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
@@ -126,7 +126,7 @@ export const registerUser = (data) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
@@ -150,7 +150,7 @@ export const deleteUser = (id) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
@@ -175,7 +175,7 @@ export const editPelajaran = (data) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
@@ -200,7 +200,7 @@ export const editUser = (data) =>{
         }
     })
     .then((res)=>{
-        if (res.data.status_code != 200) {
+        if (res.data.status_code !== 200) {
             alert(res.data.message)
         }else{
             window.location.reload()
